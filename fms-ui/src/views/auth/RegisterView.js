@@ -69,7 +69,7 @@ const RegisterView = () => {
                   setSubmitting(true);
                   console.log("Registering.....");
                   alert(JSON.stringify(response, null, 2));
-                  navigate("/app/dashboard", { replace: true });
+                  navigate("/app/login", { replace: true });
                 })
                 .catch((error) => {
                   setSubmitting(false);
