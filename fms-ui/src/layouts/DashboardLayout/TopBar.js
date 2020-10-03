@@ -5,9 +5,11 @@ import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import Logo from "../../components/Logo";
+import { logoutUser } from "../../features/user/LoginLogoutUserSlice";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -20,6 +22,9 @@ const useStyles = makeStyles(() => ({
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
   const [notifications] = useState([]);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
@@ -38,7 +43,13 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              dispatch(logoutUser());
+              navigate("/login", { replace: true });
+            }}
+          >
             <InputIcon />
           </IconButton>
         </Hidden>

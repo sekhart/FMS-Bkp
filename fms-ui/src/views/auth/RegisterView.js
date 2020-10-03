@@ -63,25 +63,16 @@ const RegisterView = () => {
               policy: Yup.boolean().oneOf([true], "This field must be checked"),
             })}
             onSubmit={(values, { setSubmitting }) => {
-              console.log("Called onSubmit....Start");
               signup(values)
                 .then((response) => {
                   setSubmitting(true);
-                  console.log("Registering.....");
                   alert(JSON.stringify(response, null, 2));
-                  navigate("/app/login", { replace: true });
+                  navigate("/login", { replace: true });
                 })
                 .catch((error) => {
                   setSubmitting(false);
                   console.log(error);
                 });
-              // setTimeout(() => {
-              //   setSubmitting(false);
-              //   alert(JSON.stringify(values, null, 2));
-              //   console.log(typeof values.policy);
-              //   navigate("/app/dashboard", { replace: true });
-              // }, 500);
-              console.log("Called onSubmit....End");
             }}
           >
             {({
@@ -91,7 +82,6 @@ const RegisterView = () => {
               handleSubmit,
               isSubmitting,
               touched,
-              values,
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={0}>

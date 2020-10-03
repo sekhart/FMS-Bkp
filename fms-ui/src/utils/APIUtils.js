@@ -34,10 +34,17 @@ export function login(loginRequest) {
 }
 
 export function signup(signupRequest) {
-    console.log("in Signup API Call")
   return request({
     url: API_BASE_URL + "/auth/signup",
     method: "POST",
+    body: JSON.stringify(signupRequest),
+  });
+}
+
+export function updateUser(signupRequest, id) {
+  return request({
+    url: API_BASE_URL + "/users/" + id,
+    method: "PUT",
     body: JSON.stringify(signupRequest),
   });
 }
@@ -69,7 +76,7 @@ export function getCurrentUser() {
 
 export function getUserProfile(username) {
   return request({
-    url: API_BASE_URL + "/users/" + username,
+    url: API_BASE_URL + "/users/userProfile?username=" + username,
     method: "GET",
   });
 }

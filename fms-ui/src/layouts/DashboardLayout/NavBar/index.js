@@ -1,15 +1,17 @@
 import { Avatar, Box, Button, Divider, Drawer, Hidden, List, makeStyles, Typography } from '@material-ui/core';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon } from 'react-feather';
+import { useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import NavItem from './NavItem';
 
 const user = {
   avatar: '/static/images/avatars/sekhar_1.png',
-  jobTitle: 'Senior Developer',
-  name: 'Sekhar Tunuri'
+  // jobTitle: 'Senior Developer',
+  // name: 'Sekhar Tunuri'
 };
 
 const items = [
@@ -28,31 +30,31 @@ const items = [
     icon: ShoppingBagIcon,
     title: 'Products'
   },
-  {
-    href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
+  // {
+  //   href: '/app/account',
+  //   icon: UserIcon,
+  //   title: 'Account'
+  // },
   {
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
   },
-  {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
-  }
+  // {
+  //   href: '/login',
+  //   icon: LockIcon,
+  //   title: 'Login'
+  // },
+  // {
+  //   href: '/register',
+  //   icon: UserPlusIcon,
+  //   title: 'Register'
+  // },
+  // {
+  //   href: '/404',
+  //   icon: AlertCircleIcon,
+  //   title: 'Error'
+  // }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -74,6 +76,10 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { userProfile } = useSelector((state) => state.userProfile);
+
+  const { firstName, lastName, userName, email, phone, address } = userProfile;
+  const name = _.startCase(firstName) + " " + _.startCase(lastName);
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -105,13 +111,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          {name}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.jobTitle}
+          {`User`}
         </Typography>
       </Box>
       <Divider />

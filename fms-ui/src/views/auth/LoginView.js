@@ -1,12 +1,16 @@
 import { Box, Button, Container, Grid, Link, makeStyles, TextField, Typography } from "@material-ui/core";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import Page from "../../components/Page";
+import { ACCESS_TOKEN } from "../../constants";
+import { loginUser } from "../../features/user/LoginLogoutUserSlice";
 import FacebookIcon from "../../icons/Facebook";
 import GoogleIcon from "../../icons/Google";
+import { login } from "../../utils/APIUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/app/dashboard", { replace: true });
+    }
+  }, [user]);
 
   return (
     <Page className={classes.root} title="Login">
@@ -32,20 +44,19 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: "sekhartsr@gmail.io",
+              usernameOrEmail: "sekhartsr@gmail.com",
               password: "Password123",
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .email("Must be a valid email")
+              usernameOrEmail: Yup.string()
                 .max(255)
-                .required("Email is required"),
+                .required("Username or Email is required"),
               password: Yup.string()
                 .max(255)
                 .required("Password is required"),
             })}
-            onSubmit={() => {
-              navigate("/app/dashboard", { replace: true });
+            onSubmit={(values) => {
+              dispatch(loginUser(values));
             }}
           >
             {({
@@ -101,20 +112,22 @@ const LoginView = () => {
                     color="textSecondary"
                     variant="body1"
                   >
-                    or login with email address
+                    or login with Username/Email
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(
+                    touched.usernameOrEmail && errors.usernameOrEmail
+                  )}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
+                  helperText={touched.usernameOrEmail && errors.usernameOrEmail}
+                  label="Email or Username"
                   margin="normal"
-                  name="email"
+                  name="usernameOrEmail"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  type="text"
+                  value={values.usernameOrEmail}
                   variant="outlined"
                 />
                 <TextField

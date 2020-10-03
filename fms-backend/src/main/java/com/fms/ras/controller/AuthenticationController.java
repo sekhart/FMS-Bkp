@@ -52,18 +52,10 @@ public class AuthenticationController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@GetMapping("/msg")
-	public String getMsg() {
-
-		return "Hello world!";
-	}
-
 	@PostMapping("/auth/signin")
-	public ResponseEntity<?> authenticateUser(
-			@Valid @RequestBody LoginRequest loginReq) {
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(
-						loginReq.getUsernameOrEmail(), loginReq.getPassword()));
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginReq) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginReq.getUsernameOrEmail(), loginReq.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = tokenProvider.generateToken(authentication);
@@ -72,24 +64,18 @@ public class AuthenticationController {
 
 	@PostMapping("/auth/signup")
 	@Transactional
-	public ResponseEntity<?> registerUser(
-			@Valid @RequestBody SignUpRequest signupReq) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signupReq) {
 
 		if (userService.existsByUsername(signupReq.getUsername())) {
-			return new ResponseEntity(
-					new ApiResponse(false, "Username already Taken!"),
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new ApiResponse(false, "Username already Taken!"), HttpStatus.BAD_REQUEST);
 		}
 
 		if (userService.existsByEmail(signupReq.getEmail())) {
-			return new ResponseEntity(
-					new ApiResponse(false, "Email already used!"),
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new ApiResponse(false, "Email already used!"), HttpStatus.BAD_REQUEST);
 		}
 
-		User user = new User(signupReq.getUsername(), signupReq.getFirstName(),
-				signupReq.getLastName(), signupReq.getEmail(),
-				signupReq.getAddress(), signupReq.getPassword());
+		User user = new User(signupReq.getUsername(), signupReq.getFirstName(), signupReq.getLastName(),
+				signupReq.getEmail(), signupReq.getAddress(), signupReq.getPassword());
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -100,12 +86,10 @@ public class AuthenticationController {
 
 		User saveUser = userService.save(user);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/auth/signin").buildAndExpand(saveUser.getUsername())
-				.toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/signin")
+				.buildAndExpand(saveUser.getUsername()).toUri();
 
-		return ResponseEntity.created(location)
-				.body(new ApiResponse(true, "User Registered Successfully!"));
+		return ResponseEntity.created(location).body(new ApiResponse(true, "User Registered Successfully!"));
 
 	}
 }

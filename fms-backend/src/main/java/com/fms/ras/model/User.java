@@ -48,6 +48,9 @@ public class User extends DateAudit {
 	@NotBlank
 	@NaturalId
 	private String email;
+	
+	@Size(max = 12)
+	private String phone;
 
 	@Size(max = 100)
 	private String address;
