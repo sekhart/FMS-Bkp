@@ -3,7 +3,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import Logo from "../../components/Logo";
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>

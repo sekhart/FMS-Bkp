@@ -31,20 +31,12 @@ export const loginUser = (values) => async (dispatch) => {
   try {
     const loginRequest = Object.assign({}, values);
     const userName = loginRequest.usernameOrEmail;
-    return login(loginRequest)
-      .then((response) => {
-        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-        dispatch(loginSuccess(userName));
-      })
-      .catch((error) => {
-        if (error.status === 401) {
-          alert(" Your Username or Password is incorrect. Please try again!");
-        } else {
-          alert("  Sorry! Something went wrong. Please try again!");
-        }
-      });
+    const response = await login(loginRequest);
+    localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+    dispatch(loginSuccess(userName));
   } catch (e) {
-    return console.error(e.message);
+    // return console.error(e.message);
+    return e;
   }
 };
 export const logoutUser = () => async (dispatch) => {

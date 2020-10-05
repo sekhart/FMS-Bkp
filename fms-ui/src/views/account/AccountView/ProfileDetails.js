@@ -3,7 +3,6 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import { fetchUserProfile } from "../../../features/user/UserProfileSlice";
 
@@ -28,7 +27,6 @@ const useStyles = makeStyles(() => ({
 
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { userProfile } = useSelector((state) => state.userProfile);
@@ -37,7 +35,7 @@ const ProfileDetails = ({ className, ...rest }) => {
     dispatch(fetchUserProfile(user));
   }, []);
 
-  const {firstName, lastName, userName, email, phone, address} = userProfile;
+  // const { firstName, lastName, userName, email, phone, address } = userProfile;
 
   const [values, setValues] = useState({
     firstName: "",
@@ -46,10 +44,11 @@ const ProfileDetails = ({ className, ...rest }) => {
     email: "",
     phone: "",
     address: "",
+    role:""
   });
 
   const handleChange = (event) => {
-    console.log("Profile: " + firstName + "");
+    // console.log("Profile: " + firstName + "");
     setValues({
       ...values,
       [event.target.name]: event.target.value,
@@ -94,7 +93,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Email Address"
+                label="Email"
                 name="email"
                 onChange={handleChange}
                 required
@@ -116,15 +115,17 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
+                label="Address"
+                name="address"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.address}
+                multiline
+                rows={4}
                 variant="outlined"
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            {/* <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Select State"
@@ -142,7 +143,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                   </option>
                 ))}
               </TextField>
-            </Grid>
+            </Grid> */}
           </Grid>
         </CardContent>
         <Divider />

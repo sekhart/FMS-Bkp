@@ -1,4 +1,4 @@
-import { AppBar, Badge, Box, Hidden, IconButton, makeStyles, Toolbar } from "@material-ui/core";
+import { AppBar, Badge, Box, Hidden, IconButton, makeStyles, Toolbar, Tooltip } from "@material-ui/core";
 import InputIcon from "@material-ui/icons/Input";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
@@ -29,29 +29,36 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
       <Toolbar>
-        <RouterLink to="/">
-          <Logo />
-        </RouterLink>
+        <Tooltip title="Farmer Management System" placement="right" arrow>
+          <RouterLink to="/">
+            <Logo />
+          </RouterLink>
+        </Tooltip>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
+          <Tooltip title="Notifications" arrow>
+            <IconButton color="inherit">
+              <Badge
+                badgeContent={notifications.length}
+                color="primary"
+                variant="dot"
+              >
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Logout" arrow>
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                dispatch(logoutUser());
+                navigate("/login", { replace: true });
+              }}
             >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton
-            color="inherit"
-            onClick={() => {
-              dispatch(logoutUser());
-              navigate("/login", { replace: true });
-            }}
-          >
-            <InputIcon />
-          </IconButton>
+              <InputIcon />
+            </IconButton>
+          </Tooltip>
         </Hidden>
         <Hidden lgUp>
           <IconButton color="inherit" onClick={onMobileNavOpen}>

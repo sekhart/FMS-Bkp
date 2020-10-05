@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fms.ras.exception.ResourceNotFoundException;
 import com.fms.ras.model.User;
 import com.fms.ras.repository.UserRepository;
 
@@ -35,7 +34,7 @@ public class UserService {
 	}
 
 	public Optional<User> findByUsernameOrEmail(String username) {
-		return userRepository.findByUsernameOrEmail(username, username);
+		return userRepository.findByEnabledTrueAndUsernameOrEmail(username, username);
 	}
 
 	public User saveUser(User user) {

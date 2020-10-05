@@ -1,7 +1,6 @@
 package com.fms.ras.controller;
 
 import java.net.URI;
-import java.util.Collections;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fms.ras.enums.RoleName;
-import com.fms.ras.exception.AppException;
 import com.fms.ras.exception.ResourceNotFoundException;
 import com.fms.ras.model.Role;
 import com.fms.ras.model.User;
@@ -78,9 +75,11 @@ public class UserController {
 
 		User user = userService.findByUsernameOrEmail(username)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+		Role role = user.getRoles().stream().findFirst().get();
 
 		UserProfile userProfile = new UserProfile(user.getUserId(), user.getFirstName(), user.getLastName(),
 				user.getUsername(), user.getEmail(), user.getPhone(), user.getAddress());
+		userProfile.setRole(role.getRoleName().toString());
 		return userProfile;
 	}
 

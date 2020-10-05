@@ -6,8 +6,9 @@ import MainLayout from './layouts/MainLayout';
 import AccountView from './views/account/AccountView';
 import LoginView from './views/auth/LoginView';
 import RegisterView from './views/auth/RegisterView';
-import CustomerListView from './views/customer/CustomerListView';
+import CustomerListView from './views/customerInfo/CustomerListView';
 import NotFoundView from './views/errors/NotFoundView';
+import Inventory from './views/inventory';
 import ProductListView from './views/product/ProductListView';
 import DashboardView from './views/reports/DashboardView';
 import SettingsView from './views/settings/SettingsView';
@@ -18,6 +19,7 @@ const CustomRoutes = [
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
+      { path: 'inventory', element: <Inventory /> },
       { path: 'customers', element: <CustomerListView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },

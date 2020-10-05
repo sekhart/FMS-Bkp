@@ -1,6 +1,6 @@
 package com.fms.ras.payloads;
 
-import java.time.Instant;
+import com.fms.ras.model.Role;
 
 import lombok.Data;
 
@@ -14,10 +14,10 @@ public class UserProfile {
 	private String email;
 	private String phone;
 	private String address;
-	
+	private String role;
 
-	public UserProfile(Long id, String firstName, String lastName, String username, String email, String phone, String address
-			) {
+	public UserProfile(Long id, String firstName, String lastName, String username, String email, String phone,
+			String address) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -26,7 +26,7 @@ public class UserProfile {
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
-		
+
 	}
 
 }

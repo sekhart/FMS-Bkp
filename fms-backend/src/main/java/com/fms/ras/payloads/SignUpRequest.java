@@ -6,6 +6,8 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class SignUpRequest {
 
@@ -27,7 +29,7 @@ public class SignUpRequest {
 	private String email;
 
 	@NotBlank
-	@Size(min = 3, max = 50)
+	@Size(min = 3, max = 150)
 	private String address;
 	
 //	@NotBlank
@@ -37,8 +39,17 @@ public class SignUpRequest {
 	@NotBlank
 	@Size(min = 6, max = 20)
 	private String password;
+	
+	@NotBlank
+	@Size(min = 6, max = 20)
+	private String passwordConfirmation;
 
 	@NotBlank
 	private Boolean policy;
+
+//	@NotBlank
+	private Date dateOfBirth;
+
+	private String role;
 
 }

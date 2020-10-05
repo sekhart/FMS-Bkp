@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,12 +74,19 @@ public class AuthenticationController {
 		}
 
 		User user = new User(signupReq.getUsername(), signupReq.getFirstName(), signupReq.getLastName(),
-				signupReq.getEmail(), signupReq.getAddress(), signupReq.getPassword());
+				signupReq.getEmail(), signupReq.getPhone(), signupReq.getAddress(), signupReq.getPassword(),
+				signupReq.getDateOfBirth());
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-		Role role = roleService.findByRoleName(RoleName.ROLE_USER)
-				.orElseThrow(() -> new AppException("User Role not set."));
+		Role role = new Role();
+		if (signupReq.getRole() != null && signupReq.getRole().equals("ROLE_ADMIN")) {
+			role = roleService.findByRoleName(RoleName.ROLE_ADMIN)
+					.orElseThrow(() -> new AppException("User Role not set."));
+		} else {
+			role = roleService.findByRoleName(RoleName.ROLE_USER)
+					.orElseThrow(() -> new AppException("User Role not set."));
+		}
 
 		user.setRoles(Collections.singleton(role));
 

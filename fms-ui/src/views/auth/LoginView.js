@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Link, makeStyles, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Container, Link, makeStyles, TextField, Typography } from "@material-ui/core";
 import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,11 +6,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import Page from "../../components/Page";
-import { ACCESS_TOKEN } from "../../constants";
 import { loginUser } from "../../features/user/LoginLogoutUserSlice";
-import FacebookIcon from "../../icons/Facebook";
-import GoogleIcon from "../../icons/Google";
-import { login } from "../../utils/APIUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,14 +45,40 @@ const LoginView = () => {
             }}
             validationSchema={Yup.object().shape({
               usernameOrEmail: Yup.string()
-                .max(255)
+                .max(20)
                 .required("Username or Email is required"),
               password: Yup.string()
-                .max(255)
+                .max(15)
                 .required("Password is required"),
             })}
-            onSubmit={(values) => {
-              dispatch(loginUser(values));
+            onSubmit={(values, { setSubmitting }) => {
+              try {
+                dispatch(loginUser(values))
+                  .then((res) => {
+                    if (typeof res !== "undefined") {
+                      if (res.status === 401) {
+                        alert(
+                          " Your Username or Password is incorrect. Please try again!"
+                        );
+                      } else {
+                        alert(
+                          "  Sorry! Something went wrong. Please try again!"
+                        );
+                      }
+                      setSubmitting(false);
+                    }
+                  })
+                  .catch((err) => {
+                    console.log("Dispatch error", err);
+                  });
+                // alert(JSON.stringify(values, null, 2));
+                
+              } catch (err) {
+                console.error(err);
+                setSubmitting(false);
+              } finally {
+                // setIsLoading(false);
+              }
             }}
           >
             {({
@@ -70,51 +92,19 @@ const LoginView = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography color="textPrimary" variant="h2">
+                  <Typography align="center" color="textPrimary" variant="h2">
                     Sign in
                   </Typography>
                   <Typography
+                    align="center"
                     color="textSecondary"
                     gutterBottom
                     variant="body2"
                   >
-                    Sign in on the internal platform
+                    Login with Username or Email
                   </Typography>
                 </Box>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Box mt={3} mb={1}>
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with Username/Email
-                  </Typography>
-                </Box>
+                <Box mt={3} mb={1}></Box>
                 <TextField
                   error={Boolean(
                     touched.usernameOrEmail && errors.usernameOrEmail

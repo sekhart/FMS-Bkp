@@ -2,14 +2,14 @@ import { Avatar, Box, Button, Divider, Drawer, Hidden, List, makeStyles, Typogra
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon } from 'react-feather';
+import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Layout as InventoryIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import NavItem from './NavItem';
 
 const user = {
-  avatar: '/static/images/avatars/sekhar_1.png',
+  avatar: '/static/images/avatars/fisher.png',
   // jobTitle: 'Senior Developer',
   // name: 'Sekhar Tunuri'
 };
@@ -20,10 +20,17 @@ const items = [
     icon: BarChartIcon,
     title: 'Dashboard'
   },
+
+  {
+    href: '/app/inventory',
+    icon: InventoryIcon,
+    title: 'Inventory'
+  },
+
   {
     href: '/app/customers',
     icon: UsersIcon,
-    title: 'Customers'
+    title: 'Customer Info'
   },
   {
     href: '/app/products',
@@ -35,11 +42,11 @@ const items = [
   //   icon: UserIcon,
   //   title: 'Account'
   // },
-  {
-    href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
-  },
+  // {
+  //   href: '/app/settings',
+  //   icon: SettingsIcon,
+  //   title: 'Settings'
+  // },
   // {
   //   href: '/login',
   //   icon: LockIcon,
@@ -78,7 +85,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const location = useLocation();
   const { userProfile } = useSelector((state) => state.userProfile);
 
-  const { firstName, lastName, userName, email, phone, address } = userProfile;
+  const { firstName, lastName, userName, email, phone, address, role } = userProfile;
   const name = _.startCase(firstName) + " " + _.startCase(lastName);
 
   useEffect(() => {
@@ -117,7 +124,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textSecondary"
           variant="body2"
         >
-          {`User`}
+          {role}
         </Typography>
       </Box>
       <Divider />

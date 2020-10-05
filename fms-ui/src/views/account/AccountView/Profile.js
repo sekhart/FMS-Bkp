@@ -6,7 +6,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const user = {
-  avatar: "/static/images/avatars/sekhar_1.png",
+  avatar: "/static/images/avatars/fisher.png",
  
 };
 
@@ -37,7 +37,7 @@ const Profile = ({ className, ...rest }) => {
             {`${_.startCase(address)}`}
           </Typography>
           <Typography
-            className={classes.dateText}
+            className={classes.root}
             color="textSecondary"
             variant="body1"
           >
